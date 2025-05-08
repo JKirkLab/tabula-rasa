@@ -1,21 +1,32 @@
 from fastapi import FastAPI, Query
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+import os
 import pandas as pd
-import re
 import numpy as np
+import re
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+print("✅ This is the main.py being executed")
 
-df_60 = pd.read_excel("backend/data/Nano_vs_Flat_Day60.xlsx")
-df_time_var = pd.read_excel("backend/data/regnier_all_combined_wpval.xlsx")
+if os.getenv("ENV") != "production":
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
+BASE_DIR = Path(__file__).parent.parent
+
+try:
+    df_60 = pd.read_excel(BASE_DIR / "backend" / "data" / "Nano_vs_Flat_Day60.xlsx")
+    df_time_var = pd.read_excel(BASE_DIR / "backend" / "data" / "regnier_all_combined_wpval.xlsx")
+    print("Data Loaded")
+except Exception as e:
+    print(" Failed to load data:", e)
 
 def get_surface(tag):
     return "nano" if "nano" in tag.lower() else "flat"
@@ -26,11 +37,11 @@ def normalize_surface(s):
 def normalize_group(g):
     return "D65A" if g == "mutant" else "Wildtype"
 
-@app.get("/proteins")
+@app.get("/api/proteins")
 def get_proteins():
     return df_60[["Accession", "Description"]].dropna().drop_duplicates().to_dict(orient="records")
 
-@app.get("/data")
+@app.get("/api/data")
 def get_data(protein: str = Query(...)):
     row = df_time_var[df_time_var["Accession"] == protein]
 
@@ -75,7 +86,7 @@ def get_data(protein: str = Query(...)):
 
     return df.to_dict(orient="records")
 
-@app.get("/bar")
+@app.get("/api/bar")
 def get_bar_data(protein: str = Query(...)):
     row = df_60[df_60["Accession"] == protein]
     if row.empty:
@@ -154,5 +165,9 @@ def get_bar_data(protein: str = Query(...)):
                 "p": float(p) if pd.notna(p) else None
             })
 
-    print(bars)
     return {"bars": bars, "pvals": pvals}
+
+
+frontend_path = Path(__file__).parent.parent / "frontend" / "build"
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+

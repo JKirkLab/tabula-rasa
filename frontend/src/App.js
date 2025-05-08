@@ -7,7 +7,7 @@ function App() {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/proteins")
+    fetch("/api/proteins")
       .then((res) => res.json())
       .then((data) => setProteins(data));
   }, []);

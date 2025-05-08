@@ -7,7 +7,7 @@ function LinePlot({ protein }) {
 
   useEffect(() => {
     if (protein) {
-      fetch(`http://localhost:8000/data?protein=${protein}`)
+      fetch(`/api/data?protein=${protein}`)
         .then((res) => res.json())
         .then((res) => setLineData(res));
     }
@@ -74,7 +74,8 @@ function LinePlot({ protein }) {
           yaxis: {
             title: {
               text: `Normalized Grouped <br>${protein} Abundance`,
-              font: { size: 16 }
+              font: { size: 16 },
+              
             },
             showline: true,
             gridcolor: 'rgba(0,0,0,0)',
@@ -83,6 +84,12 @@ function LinePlot({ protein }) {
             linewidth: 1.5,
             range: [0, null],
             fixedrange: false 
+          },
+          margin: {
+            l: 100,
+            t: 40,
+            b: 80,
+            r: 30
           },
           width: null,
           height: null

@@ -7,7 +7,7 @@ function BarPlot({ protein }) {
 
     useEffect(() => {
         if (protein) {
-            fetch(`http://localhost:8000/bar?protein=${protein}`)
+            fetch(`/api/bar?protein=${protein}`)
                 .then((res) => res.json())
                 .then(setBarData);
         }
