@@ -9,8 +9,6 @@ import re
 
 app = FastAPI()
 
-print("✅ This is the main.py being executed")
-
 if os.getenv("ENV") != "production":
     app.add_middleware(
         CORSMiddleware,
@@ -37,9 +35,32 @@ def normalize_surface(s):
 def normalize_group(g):
     return "D65A" if g == "mutant" else "Wildtype"
 
-@app.get("/api/proteins")
-def get_proteins():
-    return df_60[["Accession", "Description"]].dropna().drop_duplicates().to_dict(orient="records")
+@app.get("/api/proteins_60")
+def get_proteins_60():
+    return df_60[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
+
+@app.get("/api/proteins_var")
+def get_proteins_var():
+    return df_time_var[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
+
+@app.get("/api/proteins_time")
+def get_proteins_time(time: str):
+
+    mutant = f"({time}, mutant)"
+    control = f"({time}, control)"
+    
+    expected_columns = [
+        f"Abundance Ratio: {mutant} / {control}",
+        f"Abundance Ratio P-Value: {mutant} / {control}"
+    ]
+    matching_columns = [col for col in expected_columns if col in df_time_var.columns]
+
+    if not matching_columns:
+        return []
+    
+    filtered_df = df_time_var[df_time_var[matching_columns].notna().any(axis=1)]
+
+    return filtered_df[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
 
 @app.get("/api/data")
 def get_data(protein: str = Query(...)):
@@ -84,6 +105,8 @@ def get_data(protein: str = Query(...)):
     df["abundance"] = df["abundance"] / factor
     df["sem"] = df["sem"] / factor
 
+    df = df.dropna(subset=["abundance"])
+    df["sem"] = df["sem"].fillna(0)
     return df.to_dict(orient="records")
 
 @app.get("/api/bar")
@@ -127,11 +150,14 @@ def get_bar_data(protein: str = Query(...)):
     if not ref or ref == 0:
         ref = 1.0
 
+
+    bars_clean = []
     for b in bars:
+        if not np.isfinite(b["abundance_raw"]):
+            continue
         b["abundance"] = b["abundance_raw"] / ref
         b["sem"] = b["sem_raw"] / ref
-        del b["abundance_raw"]
-        del b["sem_raw"]
+        bars_clean.append(b)
 
     condition_comparisons = {
         "Abundance Ratio P-Value: (NANO_60, D65A) / (FLAT_60, D65A)": (["NANO", "D65A"], ["FLAT", "D65A"]),
@@ -144,7 +170,7 @@ def get_bar_data(protein: str = Query(...)):
     }
 
     pvals = []
-
+    
     row = df_60[df_60["Accession"] == protein]
     for col, (g1, g2) in condition_comparisons.items():
         if col in df_60.columns:
@@ -157,17 +183,81 @@ def get_bar_data(protein: str = Query(...)):
 
     row_group = df_time_var[df_time_var["Accession"] == protein]
     for col, (g1, g2) in genotype_comparisons.items():
-        if col in df_time_var.columns:
-            p = row_group[col].values[0]
+        if not row_group.empty and col in row_group.columns:
+            values = row_group[col].dropna().values
+            if len(values) > 0:
+                pvals.append({
+                    "group1": g1,
+                    "group2": g2,
+                    "p": float(values[0]) if pd.notna(values[0]) else None
+                })
+            else:
+                pvals.append({
+                    "group1": g1,
+                    "group2": g2,
+                    "p": None
+                })
+        else:
             pvals.append({
                 "group1": g1,
                 "group2": g2,
-                "p": float(p) if pd.notna(p) else None
+                "p": None
             })
 
-    return {"bars": bars, "pvals": pvals}
 
+    return {"bars": bars_clean, "pvals": pvals}
+
+@app.get("/api/volcano")
+def get_volcano_data(time_point: str = Query(...),
+                     ):
+    
+    ratio_col = f"Abundance Ratio: ({time_point}, mutant) / ({time_point}, control)"
+    pval_col = f"Abundance Ratio P-Value: ({time_point}, mutant) / ({time_point}, control)"
+    sub_df = df_time_var[['Accession', ratio_col, pval_col]].dropna().copy()
+    sub_df['log2FC'] = np.log2(sub_df[ratio_col])
+    sub_df['neg_log10_p'] = -np.log10(sub_df[pval_col])
+    data = sub_df[['Accession', 'log2FC', 'neg_log10_p']].to_dict(orient="records")
+    return {
+            "time_point": time_point,
+            "data": data
+        }
+
+@app.get("/api/multiline")
+def get_multi_protein_data(proteins: list[str] = Query(...)):
+    timepoints = [5, 7, 14, 30, 60]
+    grouped = {}
+
+    for protein in proteins:
+        row = df_time_var[df_time_var["Accession"] == protein]
+        if row.empty:
+            continue
+
+        protein_data = []
+
+        for time in timepoints:
+            ratio_col = f"Abundance Ratio: ({time}, mutant) / ({time}, control)"
+            pval_col = f"Abundance Ratio P-Value: ({time}, mutant) / ({time}, control)"
+
+            ratio = row[ratio_col].values[0] if ratio_col in row else None
+            pval = row[pval_col].values[0] if pval_col in row else None
+
+            protein_data.append({
+                "time": time,
+                "ratio": ratio if pd.notna(ratio) else None,
+                "p_value": pval if pd.notna(pval) else None
+            })
+
+            first_valid_ratio = next((d["ratio"] for d in protein_data if d["ratio"] is not None), None)
+            if first_valid_ratio and first_valid_ratio != 0:
+                for d in protein_data:
+                    if d["ratio"] is not None:
+                        d["ratio"] = d["ratio"] / first_valid_ratio
+
+        grouped[protein] = protein_data
+
+    return {"data": grouped}
 
 frontend_path = Path(__file__).parent.parent / "frontend" / "build"
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+
 

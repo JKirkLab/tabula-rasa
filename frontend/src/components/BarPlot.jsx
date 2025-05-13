@@ -3,7 +3,8 @@ import Plot from "react-plotly.js";
 import { Box } from "@mui/material";
 
 function BarPlot({ protein }) {
-    const [barData, setBarData] = useState(null);
+    const [barData, setBarData] = useState({ bars: [], pvals: [] });
+
 
     useEffect(() => {
         if (protein) {
@@ -13,11 +14,10 @@ function BarPlot({ protein }) {
         }
     }, [protein]);
 
-    if (!barData) return null;
     const { bars, pvals } = barData;
 
     const formatP = (p) => {
-        if (p == null) return "ns";
+        if (p == null) return "";
         if (p < 0.001) return "***";
         if (p < 0.01) return "**";
         if (p < 0.05) return "*";
@@ -47,11 +47,15 @@ function BarPlot({ protein }) {
     const x = order.map((_, i) => i);
     const y = order.map(({ condition, group }) => {
         const match = bars.find(b => b.condition === condition && b.group === group);
-        return match?.abundance ?? 0;
-
+        const val = match?.abundance;
+        return typeof val === "number" && !isNaN(val) ? val : 0;
     });
-    const sem = bars.map(d => d.sem);
 
+    const sem = order.map(({ condition, group }) => {
+        const match = bars.find(b => b.condition === condition && b.group === group);
+        const val = match?.sem;
+        return typeof val === "number" && !isNaN(val) ? val : 0;
+    });
 
     const comparisons = [
         [["FLAT", "Wildtype"], ["NANO", "Wildtype"]],
@@ -66,6 +70,10 @@ function BarPlot({ protein }) {
     const currentHeights = y.map((val, i) => val + sem[i]);
 
     for (let i = 0; i < comparisons.length; i++) {
+        const pVal = getPValue(comparisons[i]);
+        if (pVal == null) {
+            continue;
+        }
         const [[cond1, grp1], [cond2, grp2]] = comparisons[i];
         const label1 = `${grp1} ${cond1}`;
         const label2 = `${grp2} ${cond2}`;
@@ -124,7 +132,6 @@ function BarPlot({ protein }) {
         }
     }
 
-
     //red is 255 0 0sat 240 lum 120
     //light rd 255 224 224 sat 240 lum 225
     //light grey 212 212 212 hue 160 lum 200
@@ -151,8 +158,9 @@ function BarPlot({ protein }) {
         }
     });
 
+
     return (
-        <Box sx={{ width: '100%', height: '100%' }}>
+        <Box sx={{ width: '100%', height: '500px' }}>
             <Plot
                 data={[
                     {
@@ -181,36 +189,40 @@ function BarPlot({ protein }) {
                     autosize: true,
                     margin: { t: 40, b: 80, l: 60, r: 30 }, // Already has 80px bottom margin for the tilted labels
                     xaxis: {
-                      tickvals: x,
-                      ticktext: tickLabels,
-                      tickwidth: 1.5,
-                      ticklen: 6,
-                      tickangle: -45,
-                      title: "Group",
-                      linewidth: 1.5,
-                      tickcolor: '#000',
-                      showline: true
+                        tickvals: x,
+                        ticktext: tickLabels,
+                        tickwidth: 1.5,
+                        ticklen: 6,
+                        tickangle: -45,
+                        title: "Group",
+                        linewidth: 1.5,
+                        tickcolor: '#000',
+                        showline: true
                     },
                     yaxis: {
-                      title: {
-                        text: `Normalized Grouped <br>${protein} Abundance`,
-                        font: { size: 16 }
-                      },
-                      gridcolor: 'rgba(0,0,0,0)',
-                      ticklen: 6,
-                      tickwidth: 1.5,
-                      linewidth: 1.5,
-                      tickcolor: '#000',
-                      showline: true,
-                      range: [0, null],
-                      fixedrange: false 
+                        title: {
+                            text: `Normalized Grouped <br>${protein} Abundance`,
+                            font: { size: 16 }
+                        },
+                        gridcolor: 'rgba(0,0,0,0)',
+                        ticklen: 6,
+                        tickwidth: 1.5,
+                        linewidth: 1.5,
+                        tickcolor: '#000',
+                        showline: true,
+                        range: [0.001, null],
+                        fixedrange: false
                     },
-                    width: null,
-                    height: null,
+                    margin: {
+                        l: 100,
+                        t: 40,
+                        b: 80,
+                        r: 30
+                    },
                     shapes: significanceShapes,
                     annotations: significanceAnnotations
-                  }}
-                config={{ displayModeBar: false, responsive: true}}
+                }}
+                config={{ displayModeBar: false, responsive: true }}
                 style={{ width: '100%', height: '100%' }}
                 useResizeHandler={true}
             />

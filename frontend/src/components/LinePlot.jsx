@@ -61,7 +61,7 @@ function LinePlot({ protein }) {
           title: `Protein Expression: ${protein}`,
           xaxis: {
             title: {
-              text: "Day",
+              text: "Days of Maturation",
               font: { size: 16 }
             },
             type: "linear",
