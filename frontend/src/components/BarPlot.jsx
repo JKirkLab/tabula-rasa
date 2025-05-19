@@ -187,7 +187,6 @@ function BarPlot({ protein }) {
                     barmode: "group",
                     bargap: 0.25,
                     autosize: true,
-                    margin: { t: 40, b: 80, l: 60, r: 30 }, // Already has 80px bottom margin for the tilted labels
                     xaxis: {
                         tickvals: x,
                         ticktext: tickLabels,
@@ -216,7 +215,7 @@ function BarPlot({ protein }) {
                     margin: {
                         l: 100,
                         t: 40,
-                        b: 80,
+                        b: 100,
                         r: 30
                     },
                     shapes: significanceShapes,

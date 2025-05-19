@@ -57,7 +57,6 @@ function LinePlot({ protein }) {
         ]}
         layout={{
           autosize: true,
-          margin: { t: 40, b: 80, l: 60, r: 30 }, 
           title: `Protein Expression: ${protein}`,
           xaxis: {
             title: {
@@ -88,7 +87,7 @@ function LinePlot({ protein }) {
           margin: {
             l: 100,
             t: 40,
-            b: 80,
+            b: 100,
             r: 30
           },
           width: null,

@@ -5,13 +5,10 @@ import { CircularProgress, Box, Typography } from "@mui/material";
 function VolcanoPlot({ timePoint, protein }) {
     const [data, setData] = useState([]);
     const [layout, setLayout] = useState({});
-    const [loading, setLoading] = useState(false);
     const [revision, setRevision] = useState(0);
 
     useEffect(() => {
         if (!timePoint) return;
-
-        setLoading(true);
         fetch(`/api/volcano?time_point=${timePoint}`)
             .then(res => res.json())
             .then(json => {
@@ -80,12 +77,12 @@ function VolcanoPlot({ timePoint, protein }) {
                 setLayout({
                     title: `Volcano Plot (Day ${timePoint})`,
                     xaxis: {
-                        title: 'log2 Fold Change',
+                        title: {text: 'log<sub>2</sub>Fold Change'},
                         range: xRange,
                         autorange: false
                     },
                     yaxis: {
-                        title: '-log10(p-value)',
+                        title: {text: '-log<sub>10</sub>(p-value)'},
                         range: yRange,
                         autorange: false
                     },

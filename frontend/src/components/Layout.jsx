@@ -1,6 +1,5 @@
 import {
     Box,
-    Typography,
     Autocomplete,
     TextField,
     Container,
@@ -13,6 +12,7 @@ import LinePlot from "./LinePlot";
 import BarPlot from "./BarPlot";
 import VolcanoContainer from "./VolcanoContainer";
 import MultiSelectContainer from "./MultiSelectContainer";
+import Footer from "./Footer";
 
 function Layout() {
     const [proteins, setProteins] = useState([]);
@@ -68,6 +68,8 @@ function Layout() {
                     <MultiSelectContainer></MultiSelectContainer>
                 </CardContent>
             </Card>
+
+            <Footer></Footer>
         </Container>
     );
 
