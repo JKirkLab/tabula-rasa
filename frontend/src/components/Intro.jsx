@@ -1,4 +1,6 @@
 import { Box, Container, Typography, Divider } from "@mui/material";
+import { BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 function Intro() {
     return (
         <div>
@@ -37,7 +39,9 @@ function Intro() {
                     <Typography variant="body1" fontWeight={700} sx={{ mb: 2 }}>
                         Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Mary Papadaki<sup>1</sup>, Seby Edassery<sup>1</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Mark Qiao<sup>1</sup>, Michael Regnier<sup>2</sup>, Jonathan A. Kirk<sup>1†</sup>
                     </Typography>
-
+                    <Typography sx={{ mb: 2 }}>
+                        *Contributed Equally to This Work
+                    </Typography>
                     <Typography>
                         Affiliations:
                     </Typography>
@@ -55,6 +59,21 @@ function Intro() {
                         Mass spectrometry was performed at Days 5, 7, 14, 30, and 60. In addition, another cohort of samples was replated onto 
                         nanopatterned surfaces at Day 46 and assessed via mass spectrometry on Day 60.`}
                     </Typography>
+                    <Typography sx={{ mb: 2 }}>
+                        {`This webtool currently allows for users to explore singular protein expression profiles, 
+                        search for proteins in volcano plots at different time points, and also compare multiple different
+                        proteins at different time points. More features may be introduced in the future.`}
+                    </Typography>
+
+                    <Typography sx={{ mb: 2 }}>
+                        As a note, all error bars displayed in this webtool were calculated using the following formula: 
+                        <BlockMath math="\text{SEM} = \frac{\text{CV\%} \times \bar{x}}{100 \times \sqrt{n}}" />
+                        This might be different from the way error bars are calculated in some of the plots in the paper, which may lead to some discrepancies. Additionally, plotly (the graphing library used in this webtool) plots points on top of each other inherently, meaning several proteins on volcano plots will not be hoverable unless specifically searched for. 
+                    </Typography>
+                    
+                    
+                    
+
 
                 </Box>
             </Container>

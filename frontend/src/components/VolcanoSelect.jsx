@@ -46,7 +46,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
                     setSub1(null);
                     setSub2(null);
                 }}
-                sx={{ width: 200 }}
+                sx={{ width: 200, mb:1  }}
                 renderInput={(params) => <TextField {...params} label="Time" />}
             />
 
@@ -55,7 +55,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
                     options={proteinOptions}
                     value={sub1}
                     onChange={(e, value) => setSub1(value)}
-                    sx={{ width: 200 }}
+                    sx={{ width: 200, mb:1 }}
                     renderInput={(params) => <TextField {...params} label="Protein" />}
                 />
             )}
@@ -64,7 +64,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
                     options={conditionOptions[main] || []}
                     value={sub2}
                     onChange={(e, value) => setSub2(value)}
-                    sx={{ width: 200 }}
+                    sx={{ width: 200, mb:1  }}
                     renderInput={(params) => <TextField {...params} label="Condition" />}
                 />
             )}

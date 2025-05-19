@@ -27,17 +27,18 @@ function Layout() {
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Card sx={{ mb: 4 }}>
-                <Autocomplete
-                    options={proteins}
-                    getOptionLabel={(option) => `${option.Accession}`}
-                    onChange={(e, value) => value && setSelected(value.Accession)}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Search Protein" variant="outlined" />
-                    )}
-                    sx={{ mb: 4 }}
-                />
                 <CardHeader title="Protein Expression Profile" subheader={selected || "No protein selected"} />
                 <CardContent>
+
+                    <Autocomplete
+                        options={proteins}
+                        getOptionLabel={(option) => `${option.Accession}`}
+                        onChange={(e, value) => value && setSelected(value.Accession)}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Search Protein" variant="outlined" />
+                        )}
+                        sx={{ mb: 4 , width: 400}}
+                    />
                     <Box
                         sx={{
                             display: "flex",
@@ -45,6 +46,8 @@ function Layout() {
                             gap: 4,
                         }}
                     >
+
+
                         <Box sx={{ flex: 1 }}>
                             <LinePlot protein={selected} />
                         </Box>
@@ -55,7 +58,7 @@ function Layout() {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card sx={{ mb: 4 }}>
                 <CardHeader title="Volcano Plot" />
                 <CardContent>
                     <VolcanoContainer />
