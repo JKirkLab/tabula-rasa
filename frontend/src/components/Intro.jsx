@@ -1,5 +1,6 @@
 import { Box, Container, Typography, Divider } from "@mui/material";
 import { BlockMath } from 'react-katex';
+import AuthorPopover from "./AuthorPopover";
 import 'katex/dist/katex.min.css';
 function Intro() {
     return (
@@ -37,7 +38,7 @@ function Intro() {
                         but is Dispensable for Sarcomere Formation. `}
                     </Typography>
                     <Typography variant="body1" fontWeight={700} sx={{ mb: 2 }}>
-                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Mary Papadaki<sup>1</sup>, Seby Edassery<sup>1</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Mark Qiao<sup>1</sup>, Michael Regnier<sup>2</sup>, Jonathan A. Kirk<sup>1†</sup>
+                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Mary Papadaki<sup>1</sup>, Seby Edassery<sup>1</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Mark Qiao<sup>1</sup>, Michael Regnier<sup>2</sup>, {' '} <AuthorPopover> </AuthorPopover>
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                         *Contributed Equally to This Work
@@ -62,7 +63,8 @@ function Intro() {
                     <Typography sx={{ mb: 2 }}>
                         {`This webtool currently allows for users to explore singular protein expression profiles, 
                         search for proteins in volcano plots at different time points, and also compare multiple different
-                        proteins at different time points. More features may be introduced in the future.`}
+                        proteins at different time points. More features may be introduced in the future. Almost everything on the plots
+                        are interactive. Click and drag to zoom, double click to zoom out, and click on legend markers to highlight or remove traces.`}
                     </Typography>
 
                     <Typography sx={{ mb: 2 }}>

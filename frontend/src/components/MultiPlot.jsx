@@ -48,8 +48,8 @@ function MultiPlot({ proteinDataMap, proteinColorMap }) {
           title: 'Abundance Ratios Over Time',
           xaxis: { title: {text:'Days of Maturation' }, dtick: 5},
           yaxis: { title: {text:'D65A/WT' }},
-          margin: { t: 40, r: 20, b: 60, l: 60 },
-          legend: { orientation: 'h' },
+          margin: { t: 40, r: 20, b: 120, l: 60 },
+          legend: { orientation: 'h', y: -0.2 },
           height: 500
         }}
         config={{ displayModeBar: false, responsive: true }}

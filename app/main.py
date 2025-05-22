@@ -26,15 +26,6 @@ try:
 except Exception as e:
     print(" Failed to load data:", e)
 
-def get_surface(tag):
-    return "nano" if "nano" in tag.lower() else "flat"
-
-def normalize_surface(s):
-    return s.upper()  
-
-def normalize_group(g):
-    return "D65A" if g == "mutant" else "Wildtype"
-
 @app.get("/api/proteins_60")
 def get_proteins_60():
     return df_60[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
