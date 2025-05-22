@@ -36,8 +36,8 @@ function Footer() {
                         }}
                     />
                     <Typography variant="body1" sx={{ mb: 2 }}> 
-                            This project uses an icon designed by almaCELL, licensed under CC BY 4.0. No changes were made to the icon, and no endorsement is implied. <br />
-                            Webtool Layout inspired by <Link href="https://writing-assistant.github.io/#annotated-papers">A Design Space for Intelligent and Interactive Writing Assistants</Link>.
+                            This project uses an icon designed by almaCELL, licensed under CC BY 4.0. No changes were made to the icon, and no endorsement is implied. The icon was downloaded from BioIcons <br />
+                            Webtool Layout inspired by <Link href="https://writing-assistant.github.io">A Design Space for Intelligent and Interactive Writing Assistants</Link>.
 
                     </Typography>
 
