@@ -27,12 +27,35 @@ function VolcanoPlot({ timePoint, protein }) {
                 const xRange = [xMin - xPadding, xMax + xPadding];
                 const yRange = [0, yMax + yPadding];
 
-                const displayNames= points.map(p => p.display);
+                const hotspotCounts = {
+                    "6.643856|17.000000": 0,
+                    "-6.643856|17.000000": 0
+                };
+
+                points.forEach(p => {
+                    const x = p.log2FC.toFixed(6);
+                    const y = p.neg_log10_p.toFixed(6);
+                    const key = `${x}|${y}`;
+                    if (key in hotspotCounts) {
+                        hotspotCounts[key]++;
+                    }
+                });
+
+                const customdata = points.map(p => {
+                    const x = p.log2FC.toFixed(6);
+                    const y = p.neg_log10_p.toFixed(6);
+                    const key = `${x}|${y}`;
+                    return hotspotCounts[key] > 1 ? `${hotspotCounts[key]} overlapping point(s)` : "";
+
+                });
+
+                const displayNames = points.map(p => p.display);
                 const selectedIndex = displayNames.indexOf(protein);
                 const mainTrace = {
                     x: xValues,
                     y: yValues,
                     text: displayNames,
+                    customdata: customdata,
                     mode: 'markers',
                     type: 'scatter',
                     marker: {
@@ -47,7 +70,8 @@ function VolcanoPlot({ timePoint, protein }) {
                         })
 
                     },
-                    hovertemplate: 'Protein: %{text}<br>log2FC: %{x}<br>-log10(p): %{y}<extra></extra>',
+                    hovertemplate:
+                        'Protein: %{text}<br>log2FC: %{x}<br>-log10(p): %{y}<br>%{customdata}<extra></extra>',
                     showlegend: false
                 };
 
@@ -76,12 +100,12 @@ function VolcanoPlot({ timePoint, protein }) {
                 setLayout({
                     title: `Volcano Plot (Day ${timePoint})`,
                     xaxis: {
-                        title: {text: 'log<sub>2</sub>Fold Change'},
+                        title: { text: 'log<sub>2</sub>Fold Change' },
                         range: xRange,
                         autorange: false
                     },
                     yaxis: {
-                        title: {text: '-log<sub>10</sub>(p-value)'},
+                        title: { text: '-log<sub>10</sub>(p-value)' },
                         range: yRange,
                         autorange: false
                     },
