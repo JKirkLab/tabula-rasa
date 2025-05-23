@@ -27,28 +27,27 @@ function VolcanoPlot({ timePoint, protein }) {
                 const xRange = [xMin - xPadding, xMax + xPadding];
                 const yRange = [0, yMax + yPadding];
 
-                const accessions = points.map(p => p.Accession);
-
-                const selectedIndex = accessions.indexOf(protein);
+                const displayNames= points.map(p => p.display);
+                const selectedIndex = displayNames.indexOf(protein);
                 const mainTrace = {
                     x: xValues,
                     y: yValues,
-                    text: accessions,
+                    text: displayNames,
                     mode: 'markers',
                     type: 'scatter',
                     marker: {
                         size: 6,
-                        color: accessions.map(acc => {
+                        color: displayNames.map(acc => {
                             if (!protein) return 'blue';
                             return acc === protein ? 'transparent' : 'gray';
                         }),
-                        opacity: accessions.map(acc => {
+                        opacity: displayNames.map(acc => {
                             if (!protein) return 1;
                             return acc === protein ? 0 : 0.05;
                         })
 
                     },
-                    hovertemplate: 'Accession: %{text}<br>log2FC: %{x}<br>-log10(p): %{y}<extra></extra>',
+                    hovertemplate: 'Protein: %{text}<br>log2FC: %{x}<br>-log10(p): %{y}<extra></extra>',
                     showlegend: false
                 };
 

@@ -28,11 +28,15 @@ except Exception as e:
 
 @app.get("/api/proteins_60")
 def get_proteins_60():
-    return df_60[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
+    df = df_60[["Gene Symbol", "Accession"]].dropna().drop_duplicates()
+    df["display"] = df["Gene Symbol"] + " (" + df["Accession"] + ")"
+    return df[["display"]].to_dict(orient="records")
 
 @app.get("/api/proteins_var")
 def get_proteins_var():
-    return df_time_var[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
+    df = df_time_var[["Gene Symbol", "Accession"]].dropna().drop_duplicates()
+    df["display"] = df["Gene Symbol"] + " (" + df["Accession"] + ")"
+    return df[["display"]].to_dict(orient="records")
 
 @app.get("/api/proteins_time")
 def get_proteins_time(time: str):
@@ -51,11 +55,15 @@ def get_proteins_time(time: str):
     
     filtered_df = df_time_var[df_time_var[matching_columns].notna().any(axis=1)]
 
-    return filtered_df[["Accession"]].dropna().drop_duplicates().to_dict(orient="records")
+    df = filtered_df[["Gene Symbol", "Accession"]].dropna().drop_duplicates()
+    df["display"] = df["Gene Symbol"] + " (" + df["Accession"] + ")"
+    return df[["display"]].to_dict(orient="records")
 
 @app.get("/api/data")
 def get_data(protein: str = Query(...)):
-    row = df_time_var[df_time_var["Accession"] == protein]
+
+    accession = protein.split(" (")[1][:-1]
+    row = df_time_var[df_time_var["Accession"] == accession]
 
     if row.empty:
         return []
@@ -102,7 +110,9 @@ def get_data(protein: str = Query(...)):
 
 @app.get("/api/bar")
 def get_bar_data(protein: str = Query(...)):
-    row = df_60[df_60["Accession"] == protein]
+
+    accession = protein.split(" (")[1][:-1]
+    row = df_60[df_60["Accession"] == accession]
     if row.empty:
         return {"bars": []}
     pattern = r"Abundances \(Grouped\): (FLAT|NANO)_\d+,\s*(Wildtype|D65A)"
@@ -162,7 +172,7 @@ def get_bar_data(protein: str = Query(...)):
 
     pvals = []
     
-    row = df_60[df_60["Accession"] == protein]
+    row = df_60[df_60["Accession"] == accession]
     for col, (g1, g2) in condition_comparisons.items():
         if col in df_60.columns:
             p = row[col].values[0]
@@ -172,7 +182,7 @@ def get_bar_data(protein: str = Query(...)):
                 "p": float(p) if pd.notna(p) else None
             })
 
-    row_group = df_time_var[df_time_var["Accession"] == protein]
+    row_group = df_time_var[df_time_var["Accession"] == accession]
     for col, (g1, g2) in genotype_comparisons.items():
         if not row_group.empty and col in row_group.columns:
             values = row_group[col].dropna().values
@@ -199,19 +209,20 @@ def get_bar_data(protein: str = Query(...)):
     return {"bars": bars_clean, "pvals": pvals}
 
 @app.get("/api/volcano")
-def get_volcano_data(time_point: str = Query(...),
-                     ):
-    
+def get_volcano_data(time_point: str = Query(...)):
     ratio_col = f"Abundance Ratio: ({time_point}, mutant) / ({time_point}, control)"
     pval_col = f"Abundance Ratio P-Value: ({time_point}, mutant) / ({time_point}, control)"
-    sub_df = df_time_var[['Accession', ratio_col, pval_col]].dropna().copy()
+
+    sub_df = df_time_var[['Gene Symbol', 'Accession', ratio_col, pval_col]].dropna().copy()
     sub_df['log2FC'] = np.log2(sub_df[ratio_col])
     sub_df['neg_log10_p'] = -np.log10(sub_df[pval_col])
-    data = sub_df[['Accession', 'log2FC', 'neg_log10_p']].to_dict(orient="records")
+    sub_df['display'] = sub_df['Gene Symbol'] + " (" + sub_df['Accession'] + ")"
+
+    data = sub_df[['display', 'log2FC', 'neg_log10_p']].to_dict(orient="records")
     return {
-            "time_point": time_point,
-            "data": data
-        }
+        "time_point": time_point,
+        "data": data
+    }
 
 @app.get("/api/multiline")
 def get_multi_protein_data(proteins: list[str] = Query(...)):
@@ -219,7 +230,9 @@ def get_multi_protein_data(proteins: list[str] = Query(...)):
     grouped = {}
 
     for protein in proteins:
-        row = df_time_var[df_time_var["Accession"] == protein]
+
+        accession = protein.split(" (")[1][:-1]
+        row = df_time_var[df_time_var["Accession"] == accession]
         if row.empty:
             continue
 

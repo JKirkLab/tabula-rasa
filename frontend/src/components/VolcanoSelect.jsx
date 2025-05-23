@@ -14,7 +14,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
             try {
                 const response = await fetch(`/api/proteins_time?time=${main}`);
                 const data = await response.json();
-                const accessions = data.map(item => item.Accession);
+                const accessions = data.map(item => item.display);
 
                 setProteinOptions(accessions);
                 setSub1(null);

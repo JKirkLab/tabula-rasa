@@ -32,8 +32,8 @@ function Layout() {
 
                     <Autocomplete
                         options={proteins}
-                        getOptionLabel={(option) => `${option.Accession}`}
-                        onChange={(e, value) => value && setSelected(value.Accession)}
+                        getOptionLabel={(option) => `${option.display}`}
+                        onChange={(e, value) => value && setSelected(value.display)}
                         renderInput={(params) => (
                             <TextField {...params} label="Search Protein" variant="outlined" />
                         )}

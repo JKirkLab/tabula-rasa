@@ -11,7 +11,7 @@ function MultiSelect({ selectedProteins, setSelectedProteins, proteinColorMap}) 
             try {
                 const res = await fetch("/api/proteins_var");
                 const data = await res.json();
-                const accessions = data.map(p => p.Accession);
+                const accessions = data.map(p => p.display);
                 setProteinOptions(accessions)
 
             } catch (err) {
