@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Autocomplete, TextField, Chip, Box } from "@mui/material";
 
-
+const API_BASE = process.env.REACT_APP_API_URL || '';
 function MultiSelect({ selectedProteins, setSelectedProteins, proteinColorMap}) {
 
     const [proteinOptions, setProteinOptions] = useState([]);
@@ -9,7 +9,7 @@ function MultiSelect({ selectedProteins, setSelectedProteins, proteinColorMap}) 
     useEffect(() => {
         const fetchProteins = async () => {
             try {
-                const res = await fetch("/api/proteins_var");
+                const res = await fetch(`${API_BASE}/api/proteins_var`);
                 const data = await res.json();
                 const accessions = data.map(p => p.display);
                 setProteinOptions(accessions)

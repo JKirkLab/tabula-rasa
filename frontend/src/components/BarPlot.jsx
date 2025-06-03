@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import { Box } from "@mui/material";
 
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
 function BarPlot({ protein }) {
     const [barData, setBarData] = useState({ bars: [], pvals: [] });
 
 
     useEffect(() => {
         if (protein) {
-            fetch(`/api/bar?protein=${protein}`)
+            fetch(`${API_BASE}/api/bar?protein=${protein}`)
                 .then((res) => res.json())
                 .then(setBarData);
         }

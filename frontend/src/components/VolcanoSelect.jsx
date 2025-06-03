@@ -5,6 +5,8 @@ const timeOptions = ["5", "7", "14", "30", "60"];
 const conditionOptions = {
     60: ["Flat", "Nano"]
 };
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
 function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
     const [proteinOptions, setProteinOptions] = useState([]);
     useEffect(() => {
@@ -12,7 +14,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
 
         const fetchProteins = async () => {
             try {
-                const response = await fetch(`/api/proteins_time?time=${main}`);
+                const response = await fetch(`${API_BASE}/api/proteins_time?time=${main}`);
                 const data = await response.json();
                 const accessions = data.map(item => item.display);
 

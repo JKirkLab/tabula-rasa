@@ -14,12 +14,14 @@ import VolcanoContainer from "./VolcanoContainer";
 import MultiSelectContainer from "./MultiSelectContainer";
 import Footer from "./Footer";
 
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
 function Layout() {
     const [proteins, setProteins] = useState([]);
     const [selected, setSelected] = useState("");
 
     useEffect(() => {
-        fetch("/api/proteins_60")
+        fetch(`${API_BASE}/api/proteins_60`)
             .then((res) => res.json())
             .then((data) => setProteins(data));
     }, []);

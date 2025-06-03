@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import { CircularProgress, Box, Typography } from "@mui/material";
 
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
+
 function VolcanoPlot({ timePoint, protein }) {
     const [data, setData] = useState([]);
     const [layout, setLayout] = useState({});
@@ -9,7 +12,7 @@ function VolcanoPlot({ timePoint, protein }) {
 
     useEffect(() => {
         if (!timePoint) return;
-        fetch(`/api/volcano?time_point=${timePoint}`)
+        fetch(`${API_BASE}/api/volcano?time_point=${timePoint}`)
             .then(res => res.json())
             .then(json => {
                 const points = json.data;

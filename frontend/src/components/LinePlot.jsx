@@ -2,12 +2,14 @@ import Plot from "react-plotly.js";
 import { useEffect, useState } from "react";
 import { Box } from '@mui/material';
 
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
 function LinePlot({ protein }) {
   const [lineData, setLineData] = useState([]);
 
   useEffect(() => {
     if (protein) {
-      fetch(`/api/data?protein=${protein}`)
+      fetch(`${API_BASE}/api/data?protein=${protein}`)
         .then((res) => res.json())
         .then((res) => setLineData(res));
     }

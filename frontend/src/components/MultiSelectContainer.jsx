@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MultiSelect from "./MultiSelect";
 import MultiPlot from './MultiPlot';
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
 function MultiSelectContainer() {
     const [selectedProteins, setSelectedProteins] = useState([]);
     const [proteinDataMap, setProteinDataMap] = useState({});
@@ -17,7 +20,7 @@ function MultiSelectContainer() {
         }
 
         const fetchData = async () => {
-            const url = `/api/multiline?${selectedProteins.map(p => `proteins=${p}`).join('&')}`;
+            const url = `${API_BASE}/api/multiline?${selectedProteins.map(p => `proteins=${p}`).join('&')}`;
             const res = await fetch(url);
             const json = await res.json();
             setProteinDataMap(json.data);
