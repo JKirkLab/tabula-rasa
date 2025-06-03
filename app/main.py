@@ -12,7 +12,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",  
-    "https://JKirkLab.github.io" 
+    "https://jkirklab.github.io" 
 ]
 
 app.add_middleware(
