@@ -32,6 +32,10 @@ try:
 except Exception as e:
     print(" Failed to load data:", e)
 
+@app.get("/api/wakeup")
+def wakeup():
+    return {"status": "I'm awake!"}
+
 @app.get("/api/proteins_60")
 def get_proteins_60():
     df = df_60[["Gene Symbol", "Accession"]].dropna().drop_duplicates()
