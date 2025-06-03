@@ -261,7 +261,7 @@ def get_multi_protein_data(proteins: list[str] = Query(...)):
 
     return {"data": grouped}
 
-frontend_path = Path(__file__).parent.parent / "frontend" / "build"
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+# frontend_path = Path(__file__).parent.parent / "frontend" / "build"
+# app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
 
 
