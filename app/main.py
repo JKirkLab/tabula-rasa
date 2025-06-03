@@ -9,13 +9,18 @@ import re
 
 app = FastAPI()
 
-if os.getenv("ENV") != "production":
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["http://localhost:3000"],
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+
+origins = [
+    "http://localhost:3000",  
+    "https://JKirkLab.github.io" 
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 BASE_DIR = Path(__file__).parent.parent
 
