@@ -2,6 +2,11 @@ from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+from typing import Optional
 import os
 import pandas as pd
 import numpy as np
@@ -49,10 +54,13 @@ def get_proteins_var():
     return df[["display"]].to_dict(orient="records")
 
 @app.get("/api/proteins_time")
-def get_proteins_time(time: str):
-
-    mutant = f"({time}, mutant)"
-    control = f"({time}, control)"
+def get_proteins_time(time: str = Query(...), condition: Optional[str] = Query(None)):
+    if time == "60" and condition == "Nano":
+        adjusted_time = "60nano"
+    else:
+        adjusted_time = time
+    mutant = f"({adjusted_time}, mutant)"
+    control = f"({adjusted_time}, control)"
     
     expected_columns = [
         f"Abundance Ratio: {mutant} / {control}",
@@ -219,9 +227,14 @@ def get_bar_data(protein: str = Query(...)):
     return {"bars": bars_clean, "pvals": pvals}
 
 @app.get("/api/volcano")
-def get_volcano_data(time_point: str = Query(...)):
-    ratio_col = f"Abundance Ratio: ({time_point}, mutant) / ({time_point}, control)"
-    pval_col = f"Abundance Ratio P-Value: ({time_point}, mutant) / ({time_point}, control)"
+def get_volcano_data(time_point: str = Query(...), condition: Optional[str] = Query(None)):
+
+    if time_point == "60" and condition == "Nano":
+        adjusted_time_point = "60nano"
+    else:
+        adjusted_time_point = time_point
+    ratio_col = f"Abundance Ratio: ({adjusted_time_point}, mutant) / ({adjusted_time_point}, control)"
+    pval_col = f"Abundance Ratio P-Value: ({adjusted_time_point}, mutant) / ({adjusted_time_point}, control)"
 
     sub_df = df_time_var[['Gene Symbol', 'Accession', ratio_col, pval_col]].dropna().copy()
     sub_df['log2FC'] = np.log2(sub_df[ratio_col])

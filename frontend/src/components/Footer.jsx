@@ -66,7 +66,7 @@ function Footer() {
 
                         <Button
                             startIcon={<Article />}
-                            onClick={() => window.open('https://www.google.com')}
+                            onClick={() => window.open('https://www.biorxiv.org/content/10.1101/2025.03.18.644054v1')}
                             sx={{
                                 minWidth: 'auto',
                                 textTransform: 'none',

@@ -7,14 +7,17 @@ const conditionOptions = {
 };
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
-function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
+function VolcanoSelect({ main, setMain, sub1, setSub1, sub2, setSub2 }) {
     const [proteinOptions, setProteinOptions] = useState([]);
     useEffect(() => {
         if (!main) return;
-
+        let url = `${API_BASE}/api/proteins_time?time=${main}`;
+        if (main === "60" && sub2) {
+            url += `&condition=${sub2}`;
+        }
         const fetchProteins = async () => {
             try {
-                const response = await fetch(`${API_BASE}/api/proteins_time?time=${main}`);
+                const response = await fetch(url);
                 const data = await response.json();
                 const accessions = data.map(item => item.display);
 
@@ -27,16 +30,16 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
         };
 
         fetchProteins();
-    }, [main, setSub1, setSub2]);
+    }, [main, sub2, setSub1, setSub2]);
 
     useEffect(() => {
-        if (main === "60"){
+        if (main === "60" && sub2 === null) {
             setSub2("Flat");
         }
-        else {
+        if (main !== "60") {
             setSub2(null);
         }
-    },[main, setSub2])
+    }, [main, sub2, setSub2])
 
     return (
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -48,7 +51,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
                     setSub1(null);
                     setSub2(null);
                 }}
-                sx={{ width: 200, mb:1  }}
+                sx={{ width: 200, mb: 1 }}
                 renderInput={(params) => <TextField {...params} label="Time" />}
             />
 
@@ -57,7 +60,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
                     options={proteinOptions}
                     value={sub1}
                     onChange={(e, value) => setSub1(value)}
-                    sx={{ width: 200, mb:1 }}
+                    sx={{ width: 200, mb: 1 }}
                     renderInput={(params) => <TextField {...params} label="Protein" />}
                 />
             )}
@@ -66,7 +69,7 @@ function VolcanoSelect({main, setMain, sub1, setSub1, sub2, setSub2}) {
                     options={conditionOptions[main] || []}
                     value={sub2}
                     onChange={(e, value) => setSub2(value)}
-                    sx={{ width: 200, mb:1  }}
+                    sx={{ width: 200, mb: 1 }}
                     renderInput={(params) => <TextField {...params} label="Condition" />}
                 />
             )}

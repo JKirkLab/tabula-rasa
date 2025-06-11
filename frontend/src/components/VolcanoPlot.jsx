@@ -5,14 +5,19 @@ import { CircularProgress, Box, Typography } from "@mui/material";
 const API_BASE = process.env.REACT_APP_API_URL || '';
 
 
-function VolcanoPlot({ timePoint, protein }) {
+function VolcanoPlot({ timePoint, protein, condition }) {
     const [data, setData] = useState([]);
     const [layout, setLayout] = useState({});
     const [revision, setRevision] = useState(0);
 
     useEffect(() => {
         if (!timePoint) return;
-        fetch(`${API_BASE}/api/volcano?time_point=${timePoint}`)
+
+        let url = `${API_BASE}/api/volcano?time_point=${timePoint}`;
+        if(condition){
+            url += `&condition=${condition}`;
+        }
+        fetch(url)
             .then(res => res.json())
             .then(json => {
                 const points = json.data;
@@ -156,7 +161,7 @@ function VolcanoPlot({ timePoint, protein }) {
                 setRevision(prev => prev + 1);
 
             });
-    }, [timePoint, protein]);
+    }, [timePoint, protein, condition]);
     if (!timePoint) {
         return (
             <Box
