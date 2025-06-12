@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MultiSelect from "./MultiSelect";
 import MultiPlot from './MultiPlot';
-
+import MultiSelectTable from './MultiSelectTable';
+import { Typography } from '@mui/material';
 const API_BASE = process.env.REACT_APP_API_URL || '';
 
 function MultiSelectContainer() {
@@ -39,10 +40,26 @@ function MultiSelectContainer() {
             <MultiSelect
                 selectedProteins={selectedProteins}
                 setSelectedProteins={setSelectedProteins}
-                proteinColorMap={ proteinColorMap }
+                proteinColorMap={proteinColorMap}
             />
-            <MultiPlot proteinDataMap={proteinDataMap}
-                proteinColorMap={proteinColorMap} />
+
+            <div style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
+                <MultiPlot
+                    proteinDataMap={proteinDataMap}
+                    proteinColorMap={proteinColorMap}
+                />
+                {selectedProteins.length > 0 && (
+                    <div>
+                        <MultiSelectTable
+                            proteinDataMap={proteinDataMap}
+                            selectedProteins={selectedProteins}
+                        />
+                        <Typography sx={{ mt: 1, ml: 1 }}>
+                            Dash (-) indicates no p-value
+                        </Typography>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
