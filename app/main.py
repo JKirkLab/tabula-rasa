@@ -153,7 +153,7 @@ def get_bar_data(protein: str = Query(...)):
         mean = row[abundance_col].values[0]
         cv = row[cv_col].values[0] if cv_col in row.columns else np.nan
 
-        if pd.notna(cv) and mean and n:
+        if pd.notna(cv) and mean:
             sem = (cv / 100) * (mean / np.sqrt(n))
         else:
             sem = 0

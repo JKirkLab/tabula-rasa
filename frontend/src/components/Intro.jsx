@@ -68,13 +68,24 @@ function Intro() {
                     </Typography>
 
                     <Typography sx={{ mb: 2 }}>
-                        As a note, all error bars displayed in this webtool were calculated using the following formula: 
+                        As a note, all error bars displayed in this webtool were calculated using the following formula:
                         <BlockMath math="\text{SEM} = \frac{\text{CV\%} \times \bar{x}}{100 \times \sqrt{n}}" />
-                        This might be different from the way error bars are calculated in some of the plots in the paper, which may lead to some discrepancies. Additionally, plotly (the graphing library used in this webtool) plots points on top of each other inherently, meaning several proteins on volcano plots will not be hoverable unless specifically searched for. 
+                        Additionally, all p-value indicators use the same threshold:
+                        <Typography align="center" component="div">
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 1 }}>
+                                <Box> <strong>***</strong> for p &lt; 0.001 </Box>
+                                <Box> <strong>**</strong> for p &lt; 0.01 </Box>
+                                <Box> <strong>*</strong> for p &lt; 0.05 </Box>
+                                <Box> <strong>n.s.</strong> for not significant </Box>
+                            </Box>
+                        </Typography>
+
+
+
                     </Typography>
-                    
-                    
-                    
+
+
+
 
 
                 </Box>

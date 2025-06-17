@@ -172,7 +172,7 @@ function BarPlot({ protein }) {
                         y: y,
                         error_y: {
                             type: 'data',
-                            array: bars.map(d => d.sem),
+                            array: sem,
                             visible: true
                         },
                         marker: {
