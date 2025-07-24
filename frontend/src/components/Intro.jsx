@@ -79,9 +79,12 @@ function Intro() {
                                 <Box> <strong>n.s.</strong> for not significant </Box>
                             </Box>
                         </Typography>
-
-
-
+                    </Typography>
+                    <Typography sx={{ mb: 2 }}>
+                        {`Each dropdown menu is populated based on the proteins detected in its corresponding mass spectrometry run. Since these runs were 
+                        conducted on different days and may yield slightly different protein sets, the dropdowns may not all contain the same proteins. 
+                        As a result, you might find a specific protein available in one dropdown but missing from others, depending on which dataset (or sheet) 
+                        the plot is based on.`}
                     </Typography>
 
 
