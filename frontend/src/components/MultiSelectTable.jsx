@@ -27,7 +27,7 @@ function MultiSelectTable({ proteinDataMap, selectedProteins }) {
     //       </Typography>
     //     );
     //   }
-    console.log(proteinDataMap);
+    // console.log(proteinDataMap);
     return (
         <TableContainer component={Paper}>
             <Table>

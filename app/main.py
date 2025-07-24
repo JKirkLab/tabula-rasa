@@ -53,6 +53,17 @@ def get_proteins_var():
     df["display"] = df["Gene Symbol"] + " (" + df["Accession"] + ")"
     return df[["display"]].to_dict(orient="records")
 
+@app.get("/api/proteins_combined")
+def get_proteins_combined():
+    df_1= df_60[["Gene Symbol", "Accession"]].dropna().drop_duplicates()
+    df_1["display"] = df_1["Gene Symbol"] + " (" + df_1["Accession"] + ")"
+
+    df_2 = df_time_var[["Gene Symbol", "Accession"]].dropna().drop_duplicates()
+    df_2["display"] = df_2["Gene Symbol"] + " (" + df_2["Accession"] + ")"
+
+    df_combined = pd.concat([df_1, df_2]).drop_duplicates(subset=["display"]).reset_index(drop=True)
+    return df_combined[["display"]].to_dict(orient="records")
+
 @app.get("/api/proteins_time")
 def get_proteins_time(time: str = Query(...), condition: Optional[str] = Query(None)):
     if time == "60" and condition == "Nano":
@@ -82,7 +93,6 @@ def get_data(protein: str = Query(...)):
 
     accession = protein.split(" (")[1][:-1]
     row = df_time_var[df_time_var["Accession"] == accession]
-
     if row.empty:
         return []
     
@@ -103,6 +113,7 @@ def get_data(protein: str = Query(...)):
     data = []
     for abundance_col, cv_col, time, condition in matched:
         mean = row[abundance_col].values[0]
+        print(mean)
         cv = row[cv_col].values[0]
         n = 3 
         if pd.notna(cv) and mean:
@@ -116,12 +127,16 @@ def get_data(protein: str = Query(...)):
                      })
         
     df = pd.DataFrame(data)
+    # ref = df.query("time == 5 and condition == 'control'")
+    # factor = ref["abundance"].values[0] if not ref.empty else 1.0
     ref = df.query("time == 5 and condition == 'control'")
-    factor = ref["abundance"].values[0] if not ref.empty else 1.0
+    if not ref.empty and pd.notna(ref["abundance"].values[0]) and ref["abundance"].values[0] != 0:
+        factor = ref["abundance"].values[0]
+    else:
+        factor = 1.0
 
     df["abundance"] = df["abundance"] / factor
     df["sem"] = df["sem"] / factor
-
     df = df.dropna(subset=["abundance"])
     df["sem"] = df["sem"].fillna(0)
     return df.to_dict(orient="records")

@@ -28,6 +28,7 @@ function BarPlot({ protein }) {
     };
 
     const getPValue = (comparison) => {
+        if (!pvals) return null;
         const [[cond1, grp1], [cond2, grp2]] = comparison;
 
         const matchingPVal = pvals.find(p =>

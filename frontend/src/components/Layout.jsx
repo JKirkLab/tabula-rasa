@@ -21,7 +21,7 @@ function Layout() {
     const [selected, setSelected] = useState("");
 
     useEffect(() => {
-        fetch(`${API_BASE}/api/proteins_60`)
+        fetch(`${API_BASE}/api/proteins_combined`)
             .then((res) => res.json())
             .then((data) => setProteins(data));
     }, []);

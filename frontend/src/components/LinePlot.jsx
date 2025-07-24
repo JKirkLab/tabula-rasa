@@ -11,7 +11,10 @@ function LinePlot({ protein }) {
     if (protein) {
       fetch(`${API_BASE}/api/data?protein=${protein}`)
         .then((res) => res.json())
-        .then((res) => setLineData(res));
+        .then((res) => {
+          console.log("LinePlot data for:", protein, res);
+          setLineData(res);
+        });
     }
   }, [protein]);
 
@@ -76,7 +79,7 @@ function LinePlot({ protein }) {
             title: {
               text: `Normalized Grouped <br>${protein} Abundance`,
               font: { size: 16 },
-              
+
             },
             showline: true,
             gridcolor: 'rgba(0,0,0,0)',
@@ -84,7 +87,7 @@ function LinePlot({ protein }) {
             tickwidth: 1.5,
             linewidth: 1.5,
             range: [0, null],
-            fixedrange: false 
+            fixedrange: false
           },
           margin: {
             l: 100,
@@ -95,7 +98,7 @@ function LinePlot({ protein }) {
           width: null,
           height: null
         }}
-        config={{ displayModeBar: false, responsive: true}}
+        config={{ displayModeBar: false, responsive: true }}
         style={{ width: '100%', height: '100%' }}
         useResizeHandler={true}
       />
