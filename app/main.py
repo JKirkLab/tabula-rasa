@@ -113,7 +113,6 @@ def get_data(protein: str = Query(...)):
     data = []
     for abundance_col, cv_col, time, condition in matched:
         mean = row[abundance_col].values[0]
-        print(mean)
         cv = row[cv_col].values[0]
         n = 3 
         if pd.notna(cv) and mean:
