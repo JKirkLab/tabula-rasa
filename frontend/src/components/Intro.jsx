@@ -16,7 +16,7 @@ function Intro() {
                             width: '100%',
                         }}
                     >
-                        iPSC Proteomics Data Viewer Webtool
+                        iPSC-CM Proteomics Data Viewer Webtool
                     </Typography>
                     <Divider
                         sx={{
