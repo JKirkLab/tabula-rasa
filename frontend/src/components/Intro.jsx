@@ -37,7 +37,7 @@ function Intro() {
                         {`Contractility Drives Cardiomyocyte Maturation and the Response to Nanopatterns`}
                     </Typography>
                     <Typography variant="body1" fontWeight={700} sx={{ mb: 2 }}>
-                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>4*</sup>, Maria Papadaki<sup>2</sup>, Seby L. Edassery<sup>2</sup>, Timothy S. McMillen<sup>4</sup>, Dasom Yoo<sup>4</sup>, Lauren D’Amico<sup>4</sup>, Daniel Brambila-Diaz<sup>4</sup>, Lucy Maynard<sup>4</sup>, Mark Qiao<sup>1</sup>, Jennifer Davis <sup>3,4</sup> Michael Regnier<sup>4</sup>, {' '} <AuthorPopover> </AuthorPopover>
+                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>3*</sup>, Maria Papadaki<sup>2</sup>, Seby L. Edassery<sup>2</sup>, Timothy S. McMillen<sup>4</sup>, Dasom Yoo<sup>4</sup>, Lauren D’Amico<sup>4</sup>, Daniel Brambila-Diaz<sup>4</sup>, Lucy Maynard<sup>4</sup>, Mark Qiao<sup>1</sup>, Jennifer Davis <sup>3,4</sup> Michael Regnier<sup>4</sup>, {' '} <AuthorPopover> </AuthorPopover>
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                         *Contributed Equally to This Work
