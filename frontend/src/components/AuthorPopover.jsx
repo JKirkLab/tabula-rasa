@@ -49,7 +49,7 @@ function AuthorPopover() {
 
                     University of Chicago<br />
 
-                    Goldblatt Building, <br />
+                    Goldblatt Building, Room G611B <br />
 
                     860 E. 59th Street, Chicago, IL 60637<br />
 

@@ -37,7 +37,7 @@ function Intro() {
                         {`Contractility Drives Cardiomyocyte Maturation and the Response to Nanopatterns`}
                     </Typography>
                     <Typography variant="body1" fontWeight={700} sx={{ mb: 2 }}>
-                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Mary Papadaki<sup>1</sup>, Seby Edassery<sup>1</sup>, Tim McMillen<sup>2</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Lucy Maynard<sup>2</sup>, Mark Qiao<sup>1</sup>, Jennifer Davis <sup>2</sup> Michael Regnier<sup>2</sup>, {' '} <AuthorPopover> </AuthorPopover>
+                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Maria Papadaki<sup>1</sup>, Seby L. Edassery<sup>1</sup>, Timothy S. McMillen<sup>2</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Lucy Maynard<sup>2</sup>, Mark Qiao<sup>1</sup>, Jennifer Davis <sup>2</sup> Michael Regnier<sup>2</sup>, {' '} <AuthorPopover> </AuthorPopover>
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                         *Contributed Equally to This Work
@@ -46,10 +46,16 @@ function Intro() {
                         Affiliations:
                     </Typography>
                     <Typography >
-                        1. Department of Cell and Molecular Physiology, Loyola University Stritch School of Medicine, Maywood, IL
+                        1. Department of Medicine, Section of Cardiology, Biological Sciences Division, University of Chicago, Chicago, IL
+                    </Typography>
+                    <Typography>
+                        2. Department of Cell and Molecular Physiology, Loyola University Stritch School of Medicine, Maywood, IL
+                    </Typography>
+                    <Typography>
+                        3. Department of Laboratory Medicine and Pathology, University of Washington, Seattle, WA
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
-                        2. Department of Bioengineering, University of Washington, Seattle, USA.
+                        4. Department of Bioengineering, University of Washington, Seattle, WA
                     </Typography>
                     <Typography variant="body1" sx={{ mb: 2 }}>
                         {`iPSCs with homozygous D65A cardiac Troponin C (cTnC) modifications were differentiated into 
