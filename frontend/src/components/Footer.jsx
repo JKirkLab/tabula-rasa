@@ -10,7 +10,7 @@ function Footer() {
                     <Typography variant="body1" sx={{ mb: 2 }}>
                         Have Suggestions about or found issues with the webtool? Please contact Mark Qiao {' '}
                         <Link
-                            href="mailto:mqiao@luc.edu">
+                            href="mailto:mtqiao@uchicago.edu">
                             <Email sx={{ verticalAlign: 'middle' }}></Email>
                         </Link>
 
@@ -18,7 +18,7 @@ function Footer() {
                     <Typography variant="body1" sx={{ mb: 2 }}>
                         Questions about the Study? Please contact Jonathan Kirk {' '}
                         <Link
-                            href="mailto:jkirk2@luc.edu">
+                            href="mailto:Jonathan.Kirk@bsd.uchicago.edu">
                             <Email sx={{ verticalAlign: 'middle' }}></Email>
                         </Link>
                     </Typography>
@@ -66,7 +66,7 @@ function Footer() {
 
                         <Button
                             startIcon={<Article />}
-                            onClick={() => window.open('https://www.biorxiv.org/content/10.1101/2025.03.18.644054v1')}
+                            onClick={() => window.open('https://www.ahajournals.org/doi/10.1161/CIRCRESAHA.126.328318')}
                             sx={{
                                 minWidth: 'auto',
                                 textTransform: 'none',

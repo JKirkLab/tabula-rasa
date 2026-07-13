@@ -34,11 +34,10 @@ function Intro() {
                     </Typography>
 
                     <Typography variant="body1" fontWeight={700} sx={{ mb: 2 }}>
-                        {`Calcium-Activated Sarcomere Contractility Drives Cardiomyocyte Maturation and the Response to External Mechanical Cues 
-                        but is Dispensable for Sarcomere Formation. `}
+                        {`Contractility Drives Cardiomyocyte Maturation and the Response to Nanopatterns`}
                     </Typography>
                     <Typography variant="body1" fontWeight={700} sx={{ mb: 2 }}>
-                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Mary Papadaki<sup>1</sup>, Seby Edassery<sup>1</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Mark Qiao<sup>1</sup>, Michael Regnier<sup>2</sup>, {' '} <AuthorPopover> </AuthorPopover>
+                        Authors: Laura A. Sherer<sup>1*</sup>, Abigail Nagle<sup>2*</sup>, Mary Papadaki<sup>1</sup>, Seby Edassery<sup>1</sup>, Tim McMillen<sup>2</sup>, Dasom Yoo<sup>2</sup>, Lauren D’Amico<sup>2</sup>, Daniel Brambila-Diaz<sup>2</sup>, Lucy Maynard<sup>2</sup>, Mark Qiao<sup>1</sup>, Jennifer Davis <sup>2</sup> Michael Regnier<sup>2</sup>, {' '} <AuthorPopover> </AuthorPopover>
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                         *Contributed Equally to This Work

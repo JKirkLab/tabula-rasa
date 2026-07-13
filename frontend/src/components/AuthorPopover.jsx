@@ -45,13 +45,13 @@ function AuthorPopover() {
                     
                     Jonathan A. Kirk, Ph.D.<br />
 
-                    Department of Cell and Molecular Physiology<br />
+                    Department of Medicine, Section of Cardiology<br />
 
-                    Loyola University Chicago Stritch School of Medicine<br />
+                    University of Chicago<br />
 
-                    Center for Translational Research, Room 522<br />
+                    Goldblatt Building, <br />
 
-                    2160 S. First Ave. Maywood, IL 60153<br />
+                    860 E. 59th Street, Chicago, IL 60637<br />
 
                     Ph: 708-216-6348</Typography>
             </Popover>
